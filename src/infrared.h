@@ -2,8 +2,12 @@ class Infrared {
 private:
     int pin;
     bool lastState;
+    int startTime;
+    int countPerTurn;
 public:
-    void init(int pin);
+    Infrared(int pin, int countPerTurn);
+    void init();
     void tick();
-    int count = 0;
+    void reset();
+    float count = 0;
 };

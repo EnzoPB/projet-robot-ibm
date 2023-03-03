@@ -1,19 +1,23 @@
 #include <Arduino.h>
 
+#include <telemetry.h>
+#include <motor.h>
+#include <speed.h>
+#include <button.h>
+
 #ifdef MENU_ENABLE
 #include <menu.h>
 #include <menuList.h>
 #endif
-#include <button.h>
-#include <motor.h>
-#include <telemetry.h>
 
 #define DIAMETRE_ROUE = 6.5
 #define CIRC_ROUE = 6.5*3.14
 
 Telemetry telemetry(2, 3);
-MotorWrapper motor(5);
+MotorWrapper motor(4);
+Speed speed(5, 20);
 Button button(6);
+
 #ifdef MENU_ENABLE
 Menu menu;
 #endif
@@ -24,6 +28,8 @@ void setup()
 
 	telemetry.init();
 	motor.init();
+	speed.init();
+	
 	#ifdef MENU_ENABLE
 	menu.init();
 	#endif
