@@ -1,0 +1,121 @@
+#include <Arduino.h>
+
+// XBee
+#include <SoftwareSerial.h>
+
+// OLED
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+SoftwareSerial xbee(2, 3);
+Adafruit_SSD1306 display = Adafruit_SSD1306(128, 32, &Wire);
+
+int count;
+
+void setup()
+{
+	Serial.begin(9600);
+	xbee.begin(9600);
+	display.begin(SSD1306_SWITCHCAPVCC, 0x3C); // Address 0x3C for 128x32
+
+	// Clear the buffer.
+	display.clearDisplay();
+	display.display();
+
+	// text display tests
+	display.setTextSize(1);
+	display.setTextColor(WHITE);
+
+	count = 0;
+
+	pinMode(13, OUTPUT);
+	digitalWrite(13, HIGH);
+}
+
+void loop()
+{
+	String phrase = "ziz:";
+	phrase += count;
+
+	Serial.println(phrase);
+	xbee.println(phrase);
+
+	display.clearDisplay();
+	display.setCursor(0, 0);
+	display.println(phrase);
+	display.display();
+
+	count++;
+	delay(300);
+}
+
+
+
+
+
+
+/*
+#include "Grove_I2C_Motor_Driver.h"
+
+#include "SoftwareSerial.h"
+SoftwareSerial mySerial(2,3);
+
+// addresse i2c
+#define MOTOR_DRIVER 0x0f
+
+void setup()
+{
+	Motor.begin(MOTOR_DRIVER); // initialisation du driver
+	Serial.begin(9600); // initialisation moniteur série
+	pinMode(2, INPUT_PULLUP);
+
+	mySerial.begin(9600);
+	pinMode(12, OUTPUT);
+
+
+	digitalWrite(12, HIGH);
+	delay(1000);
+	digitalWrite(12, LOW);
+
+}
+
+int speed = 100; // vitesse des moteurs, sur une echelle 0 - 100
+
+int input;
+
+void loop()
+{
+
+	while (!mySerial.available())
+
+	input = mySerial.read();
+
+
+	// différentes commandes
+	// stop avant arriere droit gauche vitesse [int]
+	// MOTOR1 = droit
+	// MOTOR2 = gauche
+	if (input == '0') {
+		Serial.println(">> Stop");
+		Motor.stop(MOTOR1);
+		Motor.stop(MOTOR2);
+	} else if (input == '1') {
+		Serial.println(">> Avant");
+		Motor.speed(MOTOR1, 100);
+		Motor.speed(MOTOR2, speed);
+	} else if (input == '2') {
+		Serial.println(">> Arriere");
+		Motor.speed(MOTOR1, -speed);
+		Motor.speed(MOTOR2, -speed);
+	} else if (input == '3') {
+		Serial.println(">> Gauche");
+		Motor.speed(MOTOR1, speed*0.7);
+		Motor.speed(MOTOR2, 0);
+	} else if (input == '4') {
+		Serial.println(">> Droit");
+		Motor.speed(MOTOR1, 0);
+		Motor.speed(MOTOR2, speed*0.7);
+	}
+}*/
