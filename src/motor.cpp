@@ -5,6 +5,9 @@
 void MotorWrapper::init() {
 	this->serial.begin(9600);
 	this->st.autobaud();
+	// sometimes the motors doesn't stop at init, this weird trick does it
+	this->setSpeed(1);
+	delay(1);
 	this->setSpeed(0);
 }
 
@@ -22,12 +25,12 @@ int MotorWrapper::getMotorSpeed(int motor) {
 }
 
 void MotorWrapper::setMotorSpeed(int motor, int speed) {
-	this->st.motor(motor, speed);
-
-	if (motor == this->left) {
+	if (motor == this->left && this->leftSpeed != speed) {
 		this->leftSpeed = speed;
-	} else if (motor == this->right) {
+		this->st.motor(motor, -speed);
+	} else if (motor == this->right && this->rightSpeed != speed) {
 		this->rightSpeed = speed;
+		this->st.motor(motor, speed);
 	}
 }
 
