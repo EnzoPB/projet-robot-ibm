@@ -27,7 +27,7 @@ int MotorWrapper::getMotorSpeed(int motor) {
 void MotorWrapper::setMotorSpeed(int motor, int speed) {
 	if (motor == this->left && this->leftSpeed != speed) {
 		this->leftSpeed = speed;
-		this->st.motor(motor, -speed);
+		this->st.motor(motor, speed);
 	} else if (motor == this->right && this->rightSpeed != speed) {
 		this->rightSpeed = speed;
 		this->st.motor(motor, speed);

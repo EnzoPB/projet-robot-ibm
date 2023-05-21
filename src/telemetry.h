@@ -8,6 +8,5 @@ public:
     void sendData(String data[]);
     void init();
 
-private:
     SoftwareSerial serial;
 };

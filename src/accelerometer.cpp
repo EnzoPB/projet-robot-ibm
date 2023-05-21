@@ -20,12 +20,16 @@ void Accelerometer::init() {
 	this->callibrate();
 }
 
+int loopTimer2;
 
 void Accelerometer::loop() {
 	// we have to respect a frequency of 250hz
 	// so we wait until it has not been 4000us (period of 250hz) since the last loop
 
-	if (micros() - loopTimer <= 4000) return;
+	
+	if (4000 - (micros() - loopTimer) > 0)
+		delayMicroseconds(4000 - (micros() - loopTimer));
+
 
 	freq = 1/((micros() - loopTimer) * 1e-6);
 	loopTimer = micros();
@@ -35,9 +39,10 @@ void Accelerometer::loop() {
 	this->read_mpu_data();
 
 	// subtract the offset calibration value
-	gyro_x -= gyro_x_cal;
-	gyro_y -= gyro_y_cal;
-	gyro_z -= gyro_z_cal;
+	gyro_x -= gyro_x_cal; // ( freq / 250.0 );
+	gyro_y -= gyro_y_cal; // ( freq / 250.0 );
+	gyro_z -= gyro_z_cal; // ( freq / 250.0 );
+
 
 	// convert to instantaneous degrees per second
 	//rotation_x = (double)gyro_x / (double)scaleFactorGyro;
@@ -67,6 +72,17 @@ void Accelerometer::reset() {
 	//gyroPitch = 0;
 	//gyroRoll = 0;
 	gyroYaw = 0;
+	accelYaw = 0;
+	rotation_z = 0;
+	yaw = 0;
+
+	accel_x = 0;
+	accel_y = 0;
+	accel_z = 0;
+
+	acc_x = 0;
+	acc_y = 0;
+	acc_z = 0;
 
 	gyro_x = 0;
 	gyro_y = 0;
@@ -84,7 +100,7 @@ void Accelerometer::read_mpu_data() {
 	acc_x = Wire.read() << 8 | Wire.read();
 	acc_y = Wire.read() << 8 | Wire.read();
 	acc_z = Wire.read() << 8 | Wire.read();
-	temperature = (Wire.read() << 8 | Wire.read()) / 340 + 36.53;
+	temperature = (Wire.read() << 8 | Wire.read()) / 340.0 + 36.53;
 	gyro_x = Wire.read() << 8 | Wire.read();
 	gyro_y = Wire.read() << 8 | Wire.read();
 	gyro_z = Wire.read() << 8 | Wire.read();
@@ -92,25 +108,24 @@ void Accelerometer::read_mpu_data() {
 
 void Accelerometer::callibrate() {
 	// take 'cal_count' readings for each coordinate and then find average offset
-	for (int cal_int = 0; cal_int < cal_count; cal_int ++){
-		if(cal_int % 200 == 0) {
-			Serial.print(F("Calibrating: "));
-			Serial.print((cal_int*100)/1000);
-			Serial.println(F("%"));
-		}
+	loopTimer = micros();
+	for (int cal_int = 0; cal_int < cal_count; cal_int ++) {
+		delayMicroseconds(4000 - (micros() - loopTimer));
+
+		loopTimer = micros();
 
 		this->read_mpu_data();
 		gyro_x_cal += gyro_x;
 		gyro_y_cal += gyro_y;
 		gyro_z_cal += gyro_z;
 
-		delay(3);
 	}
 
 	// Average the values
 	gyro_x_cal /= cal_count;
 	gyro_y_cal /= cal_count;
 	gyro_z_cal /= cal_count;
+	delay(2000);
 }
 
 

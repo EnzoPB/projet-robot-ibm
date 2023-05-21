@@ -7,10 +7,6 @@ private:
 
 	long acc_x, acc_y, acc_z;
 
-	double accel_x, accel_y, accel_z;
-
-	int gyro_x, gyro_y, gyro_z;
-
 	long gyro_x_cal, gyro_y_cal, gyro_z_cal;
 
 	//double rotation_x;
@@ -28,7 +24,11 @@ public:
 
 	double freq, dt;
 
-	int temperature;
+	double temperature;
+
+	double accel_x, accel_y, accel_z;
+
+	int gyro_x, gyro_y, gyro_z;
 
 	//double roll = 0
 	//double pitch = 0

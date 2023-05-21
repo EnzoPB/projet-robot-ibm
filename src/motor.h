@@ -3,14 +3,14 @@
 
 class MotorWrapper {
 private:
-	int leftSpeed = 0;
-	int rightSpeed = 0;
-
 	SoftwareSerial serial;
 	Sabertooth st;
 public:
-	const int left = 1;
-	const int right = 2;
+	int leftSpeed = 0;
+	int rightSpeed = 0;
+	
+	const int left = 2;
+	const int right = 1;
 
 	const int forward = 1;
 	const int backward = -1;
