@@ -9,16 +9,16 @@ public:
 	int leftSpeed = 0;
 	int rightSpeed = 0;
 	
-	const int left = 2;
-	const int right = 1;
+	const short left = 2;
+	const short right = 1;
 
-	const int forward = 1;
-	const int backward = -1;
+	const short forward = 1;
+	const short backward = -1;
 
 	MotorWrapper(int tx): serial(NOT_A_PIN, tx), st(128, this->serial) {}
 	void init();
 	void setSpeed(int speed);
-	void setMotorSpeed(int motor, int speed);
-	int getMotorSpeed(int motor);
-	void setDirection(int motor, int direction);
+	void setMotorSpeed(short motor, int speed);
+	int getMotorSpeed(short motor);
+	void setDirection(short motor, short direction);
 };

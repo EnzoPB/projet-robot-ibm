@@ -16,7 +16,7 @@ void MotorWrapper::setSpeed(int speed) {
 	this->setMotorSpeed(this->right, speed);
 }
 
-int MotorWrapper::getMotorSpeed(int motor) {
+int MotorWrapper::getMotorSpeed(short motor) {
 	if (motor == this->left) {
 		return this->leftSpeed;
 	} else {
@@ -24,7 +24,7 @@ int MotorWrapper::getMotorSpeed(int motor) {
 	}
 }
 
-void MotorWrapper::setMotorSpeed(int motor, int speed) {
+void MotorWrapper::setMotorSpeed(short motor, int speed) {
 	if (motor == this->left && this->leftSpeed != speed) {
 		this->leftSpeed = speed;
 		this->st.motor(motor, speed);
@@ -34,6 +34,6 @@ void MotorWrapper::setMotorSpeed(int motor, int speed) {
 	}
 }
 
-void MotorWrapper::setDirection(int motor, int direction) {
+void MotorWrapper::setDirection(short motor, short direction) {
 	this->setMotorSpeed(motor, direction * this->getMotorSpeed(motor));
 }

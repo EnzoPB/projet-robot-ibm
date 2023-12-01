@@ -110,7 +110,7 @@ void Accelerometer::callibrate() {
 	// take 'cal_count' readings for each coordinate and then find average offset
 	loopTimer = micros();
 	for (int cal_int = 0; cal_int < cal_count; cal_int ++) {
-		delayMicroseconds(4000 - (micros() - loopTimer));
+		delayMicroseconds(10000 - (micros() - loopTimer));
 
 		loopTimer = micros();
 
